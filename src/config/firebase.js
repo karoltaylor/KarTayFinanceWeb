@@ -23,9 +23,10 @@ export const googleProvider = new GoogleAuthProvider();
 export const facebookProvider = new FacebookAuthProvider();
 export const githubProvider = new GithubAuthProvider();
 
-// Optional: Add custom parameters to providers
-googleProvider.setCustomParameters({
-  prompt: 'select_account'
-});
+// Optional: Configure providers for better redirect flow
+// Note: Removing custom parameters to avoid redirect issues
+// googleProvider.setCustomParameters({
+//   prompt: 'select_account'
+// });
 
 export default app;

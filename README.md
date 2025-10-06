@@ -6,11 +6,15 @@ A modern, fully-featured Finance Manager application built with React, featuring
 
 ### Prerequisites
 
-Before running the app, you need to set up Firebase Authentication:
+Before running the app, you need to set up:
 
-1. **Follow the setup guide**: See [FIREBASE_SETUP.md](./FIREBASE_SETUP.md) for detailed instructions
-2. **Create `.env` file**: Copy `.env.example` and add your Firebase credentials
-3. **Enable auth providers**: Enable Google, Facebook, and GitHub in Firebase Console
+1. **Firebase Authentication**: See [FIREBASE_SETUP.md](./FIREBASE_SETUP.md) for detailed instructions
+2. **Backend API**: Ensure your backend is running on `http://localhost:8000`
+3. **Environment Variables**: Create `.env` file from `env.template`:
+   ```bash
+   cp env.template .env
+   # Edit .env and add your Firebase credentials and API URL
+   ```
 
 ### Development Server
 
@@ -41,6 +45,10 @@ KarTayReactWeb/
 │   ├── main.jsx                    # Application entry point
 │   ├── App.jsx                     # Root component
 │   ├── index.css                   # Global styles
+│   ├── services/
+│   │   └── api.js                  # Backend API integration
+│   ├── contexts/
+│   │   └── AuthContext.jsx         # Authentication & user management
 │   └── pages/
 │       └── FinanceManager/         # Finance Manager application
 │           ├── FinanceManager.jsx  # Main container
@@ -105,6 +113,8 @@ date,description,amount,category
 - **React 18** - UI library
 - **Vite** - Build tool and dev server
 - **Firebase Authentication** - Multi-provider auth (Google, Facebook, GitHub)
+- **FastAPI Backend** - RESTful API (Python)
+- **MongoDB** - Database for users and wallets
 - **CSS Modules** - Scoped component styles
 - **Lucide React** - Icon library
 - **Context API** - State management for authentication
@@ -112,7 +122,9 @@ date,description,amount,category
 ## 📖 Documentation
 
 Detailed documentation available in:
+- **[API_INTEGRATION.md](./API_INTEGRATION.md)** - Backend API integration guide ⭐ NEW
 - **[FIREBASE_SETUP.md](./FIREBASE_SETUP.md)** - Complete Firebase authentication setup guide
+- **[AUTHENTICATION.md](./AUTHENTICATION.md)** - Authentication system documentation
 - `src/pages/FinanceManager/README.md` - Finance Manager features and usage
 - `src/pages/FinanceManager/ARCHITECTURE.md` - Technical architecture details
 - `src/pages/FinanceManager/SETUP.md` - Component setup instructions

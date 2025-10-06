@@ -10,9 +10,16 @@ export default function WalletCard({ wallet, isSelected, onSelect, onRemove }) {
   };
 
   return (
-    <button
+    <div
       onClick={onSelect}
       className={`${styles.card} ${isSelected ? styles.selected : ''}`}
+      role="button"
+      tabIndex={0}
+      onKeyPress={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          onSelect();
+        }
+      }}
     >
       <div className={styles.header}>
         <div className={styles.titleSection}>
@@ -36,6 +43,6 @@ export default function WalletCard({ wallet, isSelected, onSelect, onRemove }) {
       <p className={styles.transactionCount}>
         {wallet.transactions.length} transaction{wallet.transactions.length !== 1 ? 's' : ''}
       </p>
-    </button>
+    </div>
   );
 }
