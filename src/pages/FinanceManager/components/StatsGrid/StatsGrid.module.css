@@ -1,0 +1,68 @@
+.grid {
+  display: grid;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.gridTwoColumns {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.gridFourColumns {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.card {
+  background-color: white;
+  padding: 1.5rem;
+  border-radius: 0.75rem;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+}
+
+.label {
+  font-size: 0.875rem;
+}
+
+.value {
+  font-size: 1.875rem;
+  font-weight: bold;
+  margin: 0;
+}
+
+/* Type-specific styles */
+.balance {
+  color: #4f46e5;
+}
+
+.info {
+  color: #3b82f6;
+}
+
+.income {
+  color: #16a34a;
+}
+
+.expense {
+  color: #dc2626;
+}
+
+@media (max-width: 1024px) {
+  .gridFourColumns {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .gridTwoColumns,
+  .gridFourColumns {
+    grid-template-columns: 1fr;
+  }
+}

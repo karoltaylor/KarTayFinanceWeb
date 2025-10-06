@@ -1,0 +1,23 @@
+{
+  "name": "finance-manager",
+  "version": "1.0.0",
+  "description": "A modern React finance management application following best practices",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "react",
+    "finance",
+    "wallet",
+    "transaction",
+    "money-management"
+  ],
+  "author": "",
+  "license": "MIT",
+  "peerDependencies": {
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0",
+    "lucide-react": "^0.263.0"
+  }
+}

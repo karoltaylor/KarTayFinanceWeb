@@ -1,0 +1,93 @@
+FinanceManager/
+│
+├── FinanceManager.jsx                          # Main container component
+├── FinanceManager.module.css                   # Main layout styles
+├── index.js                                    # Export entry point
+│
+├── components/                                 # Component directory
+│   │
+│   ├── AddWalletForm/                         # Wallet creation form
+│   │   ├── AddWalletForm.jsx                  # Component logic
+│   │   └── AddWalletForm.module.css           # Component styles
+│   │
+│   ├── FileUploader/                          # File upload interface
+│   │   ├── FileUploader.jsx                   # Component logic
+│   │   └── FileUploader.module.css            # Component styles
+│   │
+│   ├── Sidebar/                               # Left navigation sidebar
+│   │   ├── Sidebar.jsx                        # Component logic
+│   │   └── Sidebar.module.css                 # Component styles
+│   │
+│   ├── StatsGrid/                             # Statistics display grid
+│   │   ├── StatsGrid.jsx                      # Component logic
+│   │   └── StatsGrid.module.css               # Component styles
+│   │
+│   ├── SummaryView/                           # All wallets summary page
+│   │   ├── SummaryView.jsx                    # Component logic
+│   │   └── SummaryView.module.css             # Component styles
+│   │
+│   ├── TransactionItem/                       # Single transaction display
+│   │   ├── TransactionItem.jsx                # Component logic
+│   │   └── TransactionItem.module.css         # Component styles
+│   │
+│   ├── TransactionList/                       # Transaction list container
+│   │   ├── TransactionList.jsx                # Component logic
+│   │   └── TransactionList.module.css         # Component styles
+│   │
+│   ├── WalletCard/                            # Wallet card in sidebar
+│   │   ├── WalletCard.jsx                     # Component logic
+│   │   └── WalletCard.module.css              # Component styles
+│   │
+│   ├── WalletDetailView/                      # Individual wallet details
+│   │   ├── WalletDetailView.jsx               # Component logic
+│   │   └── WalletDetailView.module.css        # Component styles
+│   │
+│   ├── WalletList/                            # List of wallet cards
+│   │   ├── WalletList.jsx                     # Component logic
+│   │   └── WalletList.module.css              # Component styles
+│   │
+│   └── WalletOverview/                        # Wallet overview grid
+│       ├── WalletOverview.jsx                 # Component logic
+│       └── WalletOverview.module.css          # Component styles
+│
+├── constants/                                  # Constants and configuration
+│   └── constants.js                           # Application constants
+│
+├── utils/                                      # Utility functions
+│   └── financeUtils.js                        # Finance calculations
+│
+├── sampleData/                                 # Sample data for testing
+│   ├── transactions-sample.csv                # CSV format example
+│   └── transactions-sample.json               # JSON format example
+│
+├── README.md                                   # Main documentation
+├── ARCHITECTURE.md                             # Architecture overview
+├── SETUP.md                                    # Setup instructions
+├── FILE_STRUCTURE.txt                          # This file
+└── package.json                                # Package metadata
+
+
+COMPONENT COUNT:
+- 10 UI Components (each with JSX + CSS)
+- 1 Main container component
+- 1 Utility file
+- 1 Constants file
+- 2 Sample data files
+- 5 Documentation files
+
+TOTAL FILES: 34 files
+
+FILE TYPES:
+- .jsx files: 11
+- .module.css files: 11
+- .js files: 2
+- .json files: 2
+- .csv files: 1
+- .md files: 3
+- .txt files: 1
+
+LINES OF CODE (Approximate):
+- JavaScript/JSX: ~1,200 lines
+- CSS: ~800 lines
+- Documentation: ~1,000 lines
+- Total: ~3,000 lines

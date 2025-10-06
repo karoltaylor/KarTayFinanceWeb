@@ -1,0 +1,106 @@
+.container {
+  background-color: white;
+  border-radius: 0.75rem;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  padding: 1.5rem;
+}
+
+.title {
+  font-size: 1.25rem;
+  font-weight: bold;
+  color: #1f2937;
+  margin-bottom: 1rem;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+}
+
+.card {
+  padding: 1rem;
+  border: 2px solid #e5e7eb;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.card:hover {
+  border-color: #a5b4fc;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.iconWrapper {
+  background-color: #eef2ff;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  color: #4f46e5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.walletName {
+  font-weight: bold;
+  color: #1f2937;
+  margin: 0;
+  font-size: 1rem;
+}
+
+.transactionCount {
+  font-size: 0.75rem;
+  color: #6b7280;
+  margin: 0.125rem 0 0 0;
+}
+
+.balance {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #4f46e5;
+  margin: 0 0 0.5rem 0;
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.5rem;
+  font-size: 0.75rem;
+}
+
+.statLabel {
+  color: #6b7280;
+  display: block;
+  margin-bottom: 0.125rem;
+}
+
+.income {
+  font-weight: 600;
+  color: #16a34a;
+  margin: 0;
+}
+
+.expense {
+  font-weight: 600;
+  color: #dc2626;
+  margin: 0;
+}
+
+@media (max-width: 1024px) {
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}
