@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import {
-  signInWithPopup,
+  signInWithRedirect,
+  getRedirectResult,
   signOut,
   onAuthStateChanged,
   setPersistence,
@@ -29,6 +30,19 @@ export function AuthProvider({ children }) {
       console.error('Error setting persistence:', error);
     });
 
+    // Check for redirect result when component mounts
+    getRedirectResult(auth)
+      .then((result) => {
+        if (result) {
+          // User successfully signed in via redirect
+          setUser(result.user);
+        }
+      })
+      .catch((error) => {
+        setError(error.message);
+        console.error('Redirect sign in error:', error);
+      });
+
     // Listen for authentication state changes
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       setUser(user);
@@ -42,8 +56,9 @@ export function AuthProvider({ children }) {
   const signInWithGoogle = async () => {
     setError(null);
     try {
-      const result = await signInWithPopup(auth, googleProvider);
-      return result.user;
+      await signInWithRedirect(auth, googleProvider);
+      // Note: The actual sign-in will complete after redirect
+      // The user will be available via getRedirectResult() after page reload
     } catch (error) {
       setError(error.message);
       console.error('Google sign in error:', error);
@@ -54,8 +69,7 @@ export function AuthProvider({ children }) {
   const signInWithFacebook = async () => {
     setError(null);
     try {
-      const result = await signInWithPopup(auth, facebookProvider);
-      return result.user;
+      await signInWithRedirect(auth, facebookProvider);
     } catch (error) {
       setError(error.message);
       console.error('Facebook sign in error:', error);
@@ -66,8 +80,7 @@ export function AuthProvider({ children }) {
   const signInWithGithub = async () => {
     setError(null);
     try {
-      const result = await signInWithPopup(auth, githubProvider);
-      return result.user;
+      await signInWithRedirect(auth, githubProvider);
     } catch (error) {
       setError(error.message);
       console.error('GitHub sign in error:', error);
