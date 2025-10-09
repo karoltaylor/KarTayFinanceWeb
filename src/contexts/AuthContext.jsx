@@ -18,8 +18,9 @@ const isLocalhost = window.location.hostname === 'localhost' ||
                     window.location.hostname === '127.0.0.1' ||
                     window.location.hostname === '';
 
-// Use popup for localhost (no COOP issues), redirect for production
-const USE_POPUP = isLocalhost;
+// Use popup for all environments to avoid cross-domain redirect issues
+// Redirect mode has issues when app domain differs from Firebase auth domain
+const USE_POPUP = true; // Changed from: isLocalhost
 
 console.log('🔧 Auth Mode:', USE_POPUP ? 'POPUP (Development)' : 'REDIRECT (Production)');
 
