@@ -12,11 +12,29 @@ const firebaseConfig = {
   appId: import.meta.env.VITE_FIREBASE_APP_ID || "your-app-id"
 };
 
+console.log('🔥 ========== FIREBASE INITIALIZATION ==========');
+console.log('🔥 Firebase Config:', {
+  authDomain: firebaseConfig.authDomain,
+  projectId: firebaseConfig.projectId,
+  hasApiKey: !!firebaseConfig.apiKey && firebaseConfig.apiKey !== "your-api-key-here",
+  hasAppId: !!firebaseConfig.appId && firebaseConfig.appId !== "your-app-id"
+});
+
+// Validate Firebase configuration
+if (firebaseConfig.apiKey === "your-api-key-here" || !firebaseConfig.apiKey) {
+  console.error('❌ Firebase API Key not configured! Check your .env file.');
+}
+if (firebaseConfig.projectId === "your-project-id" || !firebaseConfig.projectId) {
+  console.error('❌ Firebase Project ID not configured! Check your .env file.');
+}
+
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
+console.log('✅ Firebase app initialized');
 
 // Initialize Firebase Authentication
 export const auth = getAuth(app);
+console.log('✅ Firebase Auth initialized');
 
 // Initialize Auth Providers
 export const googleProvider = new GoogleAuthProvider();

@@ -1,5 +1,14 @@
 // API Service for backend communication
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000';
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
+// Validate that API_BASE_URL is configured
+if (!API_BASE_URL) {
+  throw new Error(
+    '❌ VITE_API_BASE_URL is not configured! ' +
+    'Please create a .env file with VITE_API_BASE_URL set to your backend API URL. ' +
+    'See env.template for reference.'
+  );
+}
 
 /**
  * Get user ID from localStorage

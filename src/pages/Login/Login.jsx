@@ -10,14 +10,20 @@ export default function Login() {
   const [localError, setLocalError] = useState(null);
 
   const handleAuth = async (authFunction, provider) => {
+    console.log(`🔐 ========== LOGIN: ${provider.toUpperCase()} BUTTON CLICKED ==========`);
+    console.log('📍 Current URL:', window.location.href);
     setIsLoading(true);
     setLocalError(null);
     try {
+      console.log(`🔐 Calling ${provider} sign-in function...`);
       await authFunction();
+      console.log(`✅ ${provider} sign-in function completed`);
     } catch (error) {
+      console.error(`❌ ${provider} sign-in failed:`, error);
       setLocalError(`Failed to sign in with ${provider}. Please try again.`);
     } finally {
       setIsLoading(false);
+      console.log(`🏁 Login handler finished for ${provider}`);
     }
   };
 

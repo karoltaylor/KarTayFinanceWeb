@@ -43,7 +43,14 @@ export function AuthProvider({ children }) {
 
   useEffect(() => {
     const initAuth = async () => {
+      console.log('🔵 ========== AUTH INITIALIZATION START ==========');
       console.log('🔵 Initializing auth...');
+      console.log('🌍 Environment:', {
+        hostname: window.location.hostname,
+        href: window.location.href,
+        isLocalhost,
+        authMode: USE_POPUP ? 'POPUP' : 'REDIRECT'
+      });
       
       // Only check for redirect result in production (when using redirect mode)
       if (!USE_POPUP) {
@@ -111,13 +118,23 @@ export function AuthProvider({ children }) {
       // Set up the auth state listener
       console.log('🔵 Setting up auth state listener...');
       const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
-        console.log('🔔 Auth state changed:', firebaseUser ? `✅ ${firebaseUser.email}` : '❌ No user');
+        console.log('🔔 ========== AUTH STATE CHANGED ==========');
+        console.log('🔔 Auth state changed:', firebaseUser ? `✅ User authenticated` : '❌ No user');
+        if (firebaseUser) {
+          console.log('👤 Firebase User Details:', {
+            email: firebaseUser.email,
+            uid: firebaseUser.uid,
+            displayName: firebaseUser.displayName,
+            providerId: firebaseUser.providerData?.[0]?.providerId,
+            emailVerified: firebaseUser.emailVerified
+          });
+        }
         setUser(firebaseUser);
         
         if (firebaseUser) {
           // Register user in backend (backend handles if user already exists)
           try {
-            console.log('👤 Registering/verifying user in backend...');
+            console.log('🔄 Starting backend registration/verification...');
             
             // Determine OAuth provider from providerData
             let oauthProvider = 'google'; // default
@@ -128,6 +145,13 @@ export function AuthProvider({ children }) {
               else if (providerId.includes('github')) oauthProvider = 'github';
             }
             
+            console.log('📤 Sending registration request to backend:', {
+              email: firebaseUser.email,
+              username: firebaseUser.displayName || firebaseUser.email.split('@')[0],
+              oauth_provider: oauthProvider,
+              oauth_id: firebaseUser.uid,
+            });
+            
             const backendUserData = await registerUser({
               email: firebaseUser.email,
               username: firebaseUser.displayName || firebaseUser.email.split('@')[0],
@@ -135,25 +159,39 @@ export function AuthProvider({ children }) {
               oauth_id: firebaseUser.uid,
             });
             
-            console.log('✅ User registered in backend:', backendUserData);
+            console.log('✅ Backend registration successful:', backendUserData);
             setBackendUser(backendUserData);
+            console.log('✅ Backend user state updated');
           } catch (error) {
+            console.error('❌ ========== BACKEND REGISTRATION ERROR ==========');
             console.error('❌ Error registering user in backend:', error);
+            console.error('❌ Error details:', {
+              message: error.message,
+              stack: error.stack
+            });
+            console.log('⚠️ Continuing with Firebase-only auth (no backend user)');
             // Don't block user from using the app, continue with Firebase auth
             // Set a minimal backend user object with Firebase info
-            setBackendUser({
+            const fallbackUser = {
               firebase_uid: firebaseUser.uid,
               email: firebaseUser.email,
               display_name: firebaseUser.displayName || firebaseUser.email.split('@')[0],
-            });
+            };
+            console.log('⚠️ Using fallback user data:', fallbackUser);
+            setBackendUser(fallbackUser);
           }
         } else {
+          console.log('🚪 User logged out, clearing state...');
           // User logged out, clear stored user ID
           setUserId(null);
           setBackendUser(null);
+          console.log('✅ User state cleared');
         }
         
+        console.log('🏁 Setting loading to false...');
         setLoading(false);
+        console.log('🏁 Auth state change handling complete');
+        console.log('🔵 ========== AUTH STATE CHANGED END ==========');
       });
 
       return unsubscribe;
@@ -172,67 +210,91 @@ export function AuthProvider({ children }) {
   }, []);
 
   const signInWithGoogle = async () => {
+    console.log('🚀 ========== GOOGLE SIGN-IN INITIATED ==========');
     setError(null);
     try {
       if (USE_POPUP) {
         console.log('🪟 Initiating Google sign-in with POPUP...');
         const result = await signInWithPopup(auth, googleProvider);
+        console.log('✅ Popup sign-in successful:', result.user.email);
         return result.user;
       } else {
         console.log('🔄 Initiating Google sign-in with REDIRECT...');
+        console.log('📍 Current location before redirect:', window.location.href);
         await signInWithRedirect(auth, googleProvider);
+        console.log('📍 Redirect initiated (this line may not be reached)');
         // The actual sign-in will complete after redirect
       }
     } catch (error) {
+      console.error('❌ ========== GOOGLE SIGN-IN ERROR ==========');
+      console.error('❌ Error:', error);
+      console.error('❌ Error code:', error.code);
+      console.error('❌ Error message:', error.message);
       setError(error.message);
-      console.error('Google sign in error:', error);
       throw error;
     }
   };
 
   const signInWithFacebook = async () => {
+    console.log('🚀 ========== FACEBOOK SIGN-IN INITIATED ==========');
     setError(null);
     try {
       if (USE_POPUP) {
         console.log('🪟 Initiating Facebook sign-in with POPUP...');
         const result = await signInWithPopup(auth, facebookProvider);
+        console.log('✅ Popup sign-in successful:', result.user.email);
         return result.user;
       } else {
         console.log('🔄 Initiating Facebook sign-in with REDIRECT...');
+        console.log('📍 Current location before redirect:', window.location.href);
         await signInWithRedirect(auth, facebookProvider);
+        console.log('📍 Redirect initiated (this line may not be reached)');
       }
     } catch (error) {
+      console.error('❌ ========== FACEBOOK SIGN-IN ERROR ==========');
+      console.error('❌ Error:', error);
+      console.error('❌ Error code:', error.code);
+      console.error('❌ Error message:', error.message);
       setError(error.message);
-      console.error('Facebook sign in error:', error);
       throw error;
     }
   };
 
   const signInWithGithub = async () => {
+    console.log('🚀 ========== GITHUB SIGN-IN INITIATED ==========');
     setError(null);
     try {
       if (USE_POPUP) {
         console.log('🪟 Initiating GitHub sign-in with POPUP...');
         const result = await signInWithPopup(auth, githubProvider);
+        console.log('✅ Popup sign-in successful:', result.user.email);
         return result.user;
       } else {
         console.log('🔄 Initiating GitHub sign-in with REDIRECT...');
+        console.log('📍 Current location before redirect:', window.location.href);
         await signInWithRedirect(auth, githubProvider);
+        console.log('📍 Redirect initiated (this line may not be reached)');
       }
     } catch (error) {
+      console.error('❌ ========== GITHUB SIGN-IN ERROR ==========');
+      console.error('❌ Error:', error);
+      console.error('❌ Error code:', error.code);
+      console.error('❌ Error message:', error.message);
       setError(error.message);
-      console.error('GitHub sign in error:', error);
       throw error;
     }
   };
 
   const logout = async () => {
+    console.log('🚪 ========== LOGOUT INITIATED ==========');
     setError(null);
     try {
+      console.log('🚪 Signing out from Firebase...');
       await signOut(auth);
+      console.log('✅ Logout successful');
     } catch (error) {
+      console.error('❌ Logout error:', error);
       setError(error.message);
-      console.error('Logout error:', error);
       throw error;
     }
   };
@@ -248,6 +310,14 @@ export function AuthProvider({ children }) {
     logout,
     isAuthenticated: !!user
   };
+
+  console.log('📊 AuthProvider state:', {
+    hasUser: !!user,
+    hasBackendUser: !!backendUser,
+    loading,
+    isAuthenticated: !!user,
+    error: error ? error.substring(0, 50) : null
+  });
 
   return (
     <AuthContext.Provider value={value}>
