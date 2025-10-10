@@ -1,13 +1,15 @@
 .item {
   display: grid;
-  grid-template-columns: 120px 1fr 150px 120px;
-  gap: 1rem;
+  grid-template-columns: 100px 150px 100px 90px 100px 100px 110px 80px 80px;
+  gap: 0.75rem;
   align-items: center;
-  padding: 1rem;
+  padding: 0.75rem 1rem;
   background-color: #f9fafb;
   border-radius: 0.5rem;
   transition: background-color 0.2s;
   border: 1px solid transparent;
+  font-size: 0.875rem;
+  overflow-x: auto;
 }
 
 .item:hover {
@@ -16,44 +18,73 @@
 }
 
 .date {
-  font-size: 0.875rem;
+  font-size: 0.8rem;
   color: #6b7280;
   font-weight: 500;
 }
 
-.description {
+.assetName {
   font-weight: 600;
   color: #1f2937;
-  font-size: 1rem;
-  margin: 0;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
-.category {
+.assetType,
+.transactionType {
   display: flex;
   align-items: center;
 }
 
-.categoryTag {
+.typeTag {
   background-color: #e5e7eb;
   color: #4b5563;
-  padding: 0.25rem 0.75rem;
-  border-radius: 9999px;
-  font-size: 0.875rem;
+  padding: 0.2rem 0.5rem;
+  border-radius: 0.25rem;
+  font-size: 0.75rem;
   font-weight: 500;
   display: inline-block;
-  max-width: 140px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  text-transform: uppercase;
 }
 
-.amount {
-  font-weight: bold;
-  font-size: 1.125rem;
+.typeTag.buy {
+  background-color: #dcfce7;
+  color: #16a34a;
+}
+
+.typeTag.sell {
+  background-color: #fee2e2;
+  color: #dc2626;
+}
+
+.typeTag.transfer {
+  background-color: #dbeafe;
+  color: #2563eb;
+}
+
+.volume,
+.itemPrice,
+.fee {
   text-align: right;
+  color: #4b5563;
+  font-family: 'Courier New', monospace;
+}
+
+.transactionAmount {
+  font-weight: bold;
+  text-align: right;
+  font-family: 'Courier New', monospace;
+}
+
+.currency {
+  text-align: center;
+  font-weight: 600;
+  color: #6b7280;
+  font-size: 0.75rem;
 }
 
 .positive {
@@ -64,41 +95,92 @@
   color: #dc2626;
 }
 
-/* Responsive design - show card layout on mobile */
+/* Responsive design - enable horizontal scroll on smaller screens */
+@media (max-width: 1200px) {
+  .item {
+    min-width: 950px; /* Minimum width to prevent squishing */
+  }
+}
+
+/* Mobile: Stack key information vertically */
 @media (max-width: 768px) {
   .item {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0.75rem;
-    grid-template-columns: none;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto;
+    gap: 0.5rem;
+    min-width: auto;
+    padding: 1rem;
   }
 
   .date {
+    grid-column: 1 / -1;
     font-size: 0.75rem;
     order: 1;
   }
 
-  .description {
-    font-size: 1.125rem;
-    font-weight: 600;
+  .assetName {
+    grid-column: 1 / -1;
+    font-size: 1rem;
+    font-weight: 700;
     white-space: normal;
     order: 2;
   }
 
-  .category {
+  .assetType {
     order: 3;
   }
 
-  .categoryTag {
-    font-size: 0.875rem;
-    max-width: none;
+  .transactionType {
+    order: 4;
   }
 
-  .amount {
-    align-self: flex-end;
-    font-size: 1.5rem;
-    order: 4;
-    margin-top: 0.25rem;
+  .volume {
+    order: 5;
+    text-align: left;
+  }
+
+  .volume::before {
+    content: "Vol: ";
+    font-weight: 600;
+  }
+
+  .itemPrice {
+    order: 6;
+    text-align: left;
+  }
+
+  .itemPrice::before {
+    content: "Price: ";
+    font-weight: 600;
+  }
+
+  .transactionAmount {
+    grid-column: 1;
+    font-size: 1.25rem;
+    text-align: left;
+    order: 7;
+  }
+
+  .transactionAmount::before {
+    content: "Amount: ";
+    font-weight: 600;
+    color: #6b7280;
+  }
+
+  .currency {
+    grid-column: 2;
+    text-align: right;
+    order: 8;
+  }
+
+  .fee {
+    order: 9;
+    text-align: left;
+  }
+
+  .fee::before {
+    content: "Fee: ";
+    font-weight: 600;
   }
 }
