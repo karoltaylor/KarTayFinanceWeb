@@ -10,6 +10,7 @@ import {
 } from 'firebase/auth';
 import { auth, googleProvider, facebookProvider, githubProvider } from '../config/firebase';
 import { registerUser, setUserId } from '../services/api';
+import logger from '../services/logger';
 
 const AuthContext = createContext({});
 
@@ -163,6 +164,13 @@ export function AuthProvider({ children }) {
             console.log('✅ Backend registration successful:', backendUserData);
             setBackendUser(backendUserData);
             console.log('✅ Backend user state updated');
+            
+            // Set logger user context
+            logger.setUser(backendUserData.user_id, backendUserData.email);
+            logger.auth('User logged in successfully', {
+              user_id: backendUserData.user_id,
+              oauth_provider: oauthProvider
+            });
           } catch (error) {
             console.error('❌ ========== BACKEND REGISTRATION ERROR ==========');
             console.error('❌ Error registering user in backend:', error);
@@ -186,6 +194,9 @@ export function AuthProvider({ children }) {
           // User logged out, clear stored user ID
           setUserId(null);
           setBackendUser(null);
+          // Clear logger user context
+          logger.clearUser();
+          logger.auth('User logged out');
           console.log('✅ User state cleared');
         }
         

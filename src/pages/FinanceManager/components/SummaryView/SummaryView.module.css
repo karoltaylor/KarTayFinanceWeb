@@ -19,6 +19,18 @@
   margin: 0;
 }
 
+.chartsContainer {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+}
+
+.chartPane,
+.listPane {
+  min-height: 400px;
+}
+
 .emptyState {
   background-color: white;
   border-radius: 0.75rem;
@@ -42,4 +54,24 @@
 .emptyText {
   color: #9ca3af;
   margin: 0;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .container {
+    padding: 0 1rem;
+  }
+  
+  .title {
+    font-size: 1.5rem;
+  }
+  
+  .chartsContainer {
+    margin-top: 1rem;
+  }
+  
+  .chartPane,
+  .listPane {
+    min-height: 300px;
+  }
 }

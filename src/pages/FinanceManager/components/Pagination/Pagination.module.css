@@ -1,0 +1,215 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1.5rem;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e2e8f0;
+  min-width: 0;
+  overflow: visible;
+}
+
+.info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.875rem;
+  color: #64748b;
+}
+
+.totalCount {
+  font-weight: 500;
+  color: #334155;
+}
+
+.pageInfo {
+  font-weight: 600;
+  color: #1e293b;
+}
+
+.controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  min-width: 0;
+  overflow: visible;
+}
+
+.button {
+  padding: 0.5rem 1rem;
+  border: 1px solid #d1d5db;
+  background: white;
+  color: #374151;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  min-width: 80px;
+}
+
+.button:hover:not(:disabled) {
+  background: #f9fafb;
+  border-color: #9ca3af;
+}
+
+.button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.prevButton {
+  margin-right: 0.5rem;
+}
+
+.nextButton {
+  margin-left: 0.5rem;
+}
+
+.pageNumbers {
+  display: flex;
+  gap: 0.25rem;
+  flex-wrap: nowrap;
+  min-width: 0;
+  overflow: visible;
+}
+
+.pageButton {
+  padding: 0.5rem 0.75rem;
+  border: 1px solid #d1d5db;
+  background: white;
+  color: #374151;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  min-width: 40px;
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+.pageButton:hover:not(:disabled) {
+  background: #f9fafb;
+  border-color: #9ca3af;
+}
+
+.pageButton.active {
+  background: #3b82f6;
+  color: white;
+  border-color: #3b82f6;
+}
+
+.pageButton.active:hover {
+  background: #2563eb;
+  border-color: #2563eb;
+}
+
+.pageButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.ellipsis {
+  cursor: default;
+  background: transparent;
+  border: none;
+  color: #9ca3af;
+  min-width: 40px;
+  padding: 0.5rem 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 500;
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+.ellipsis:hover {
+  background: transparent;
+  border: none;
+}
+
+/* Loading state */
+.button:disabled,
+.pageButton:disabled {
+  position: relative;
+}
+
+.button:disabled::after,
+.pageButton:disabled::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 12px;
+  height: 12px;
+  margin: -6px 0 0 -6px;
+  border: 2px solid #e5e7eb;
+  border-top: 2px solid #3b82f6;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Responsive design */
+@media (max-width: 640px) {
+  .container {
+    padding: 1rem;
+  }
+  
+  .info {
+    flex-direction: column;
+    gap: 0.5rem;
+    text-align: center;
+  }
+  
+  .controls {
+    flex-wrap: wrap;
+    gap: 0.25rem;
+  }
+  
+  .button {
+    min-width: 70px;
+    padding: 0.5rem 0.75rem;
+  }
+  
+  .pageButton {
+    min-width: 35px;
+    padding: 0.5rem 0.5rem;
+    flex-shrink: 0;
+  }
+  
+  .pageNumbers {
+    order: 2;
+    width: 100%;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 0.25rem;
+    overflow: visible;
+  }
+  
+  .ellipsis {
+    min-width: 35px;
+    padding: 0.5rem 0.5rem;
+    flex-shrink: 0;
+  }
+  
+  .prevButton {
+    order: 1;
+    margin-right: 0;
+  }
+  
+  .nextButton {
+    order: 3;
+    margin-left: 0;
+  }
+}

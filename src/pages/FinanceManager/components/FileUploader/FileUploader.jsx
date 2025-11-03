@@ -24,7 +24,7 @@ export default function FileUploader({ onFileUpload }) {
           className={styles.input}
         />
       </label>
-      <p className={styles.hint}>Supports CSV or JSON format</p>
+      <p className={styles.hint}>Supports CSV, XLS or XLSX</p>
     </div>
   );
 }

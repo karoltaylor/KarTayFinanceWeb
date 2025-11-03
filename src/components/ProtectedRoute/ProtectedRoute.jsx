@@ -1,7 +1,9 @@
 import React, { useEffect } from 'react';
 import { useAuth } from '../../contexts/AuthContext';
+import { isUserAuthorized } from '../../config/authorization';
 import Login from '../../pages/Login/Login';
 import LoadingSpinner from '../LoadingSpinner/LoadingSpinner';
+import Unauthorized from '../Unauthorized/Unauthorized';
 
 export default function ProtectedRoute({ children }) {
   const { user, loading } = useAuth();
@@ -31,6 +33,12 @@ export default function ProtectedRoute({ children }) {
   if (!user) {
     console.log('🔐 Rendering Login page');
     return <Login />;
+  }
+
+  // Check if user is authorized
+  if (!isUserAuthorized(user.email)) {
+    console.log('🚫 User not authorized:', user.email);
+    return <Unauthorized />;
   }
 
   console.log('✅ Rendering protected content');

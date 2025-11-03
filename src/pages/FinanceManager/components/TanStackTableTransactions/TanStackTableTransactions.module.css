@@ -1,0 +1,84 @@
+.container {
+  width: 100%;
+  margin: 1.5rem 0;
+  padding: 0;
+}
+
+/* Enhanced custom styles for TanStack Table */
+.container :global(.MuiTable-root) {
+  font-family: 'Inter', 'Roboto', 'Helvetica', 'Arial', sans-serif;
+}
+
+.container :global(.MuiTableHead-root) {
+  background-color: rgba(25, 118, 210, 0.08);
+}
+
+.container :global(.MuiTableCell-head) {
+  font-weight: 600;
+  color: #1976d2;
+  background-color: rgba(25, 118, 210, 0.08);
+  border-bottom: 2px solid #1976d2;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.container :global(.MuiTableCell-head:hover) {
+  background-color: rgba(25, 118, 210, 0.12);
+}
+
+.container :global(.MuiTableCell-body) {
+  font-size: 0.875rem;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  padding: 8px 16px;
+}
+
+.container :global(.MuiTableRow-root) {
+  transition: background-color 0.2s ease;
+}
+
+.container :global(.MuiTableRow-root:nth-of-type(even)) {
+  background-color: rgba(245, 245, 245, 0.3);
+}
+
+.container :global(.MuiTableRow-root:hover) {
+  background-color: rgba(25, 118, 210, 0.04);
+}
+
+.container :global(.MuiTablePagination-root) {
+  border-top: 2px solid #e0e0e0;
+  background-color: rgba(245, 245, 245, 0.5);
+}
+
+/* Search input styling */
+.container :global(.MuiTextField-root) {
+  margin: 0;
+}
+
+.container :global(.MuiInputBase-root) {
+  border-radius: 8px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1200px) {
+  .container {
+    margin: 1rem 0;
+  }
+}
+
+@media (max-width: 768px) {
+  .container :global(.MuiTableCell-body) {
+    font-size: 0.75rem;
+    padding: 4px 8px;
+  }
+  
+  .container :global(.MuiTableCell-head) {
+    font-size: 0.75rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .container :global(.MuiTableCell-body) {
+    font-size: 0.7rem;
+    padding: 2px 4px;
+  }
+}

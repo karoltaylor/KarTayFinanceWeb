@@ -41,7 +41,7 @@ export default function WalletCard({ wallet, isSelected, onSelect, onRemove }) {
         {formatCurrency(wallet.balance)}
       </p>
       <p className={styles.transactionCount}>
-        {wallet.transactions.length} transaction{wallet.transactions.length !== 1 ? 's' : ''}
+        {wallet.totalTransactionCount || wallet.transactions.length} transaction{(wallet.totalTransactionCount || wallet.transactions.length) !== 1 ? 's' : ''}
       </p>
     </div>
   );

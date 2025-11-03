@@ -1,9 +1,18 @@
 export const FILE_TYPES = {
   CSV: '.csv',
-  JSON: '.json'
+  XLS: '.xls',
+  XLSX: '.xlsx',
 };
 
-export const ACCEPTED_FILE_TYPES = `${FILE_TYPES.CSV},${FILE_TYPES.JSON}`;
+// Prefer explicit extensions plus common MIME types for Excel/CSV
+export const ACCEPTED_FILE_TYPES = [
+  FILE_TYPES.CSV,
+  FILE_TYPES.XLS,
+  FILE_TYPES.XLSX,
+  'text/csv',
+  'application/vnd.ms-excel',
+  'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+].join(',');
 
 export const TRANSACTION_CATEGORIES = [
   'General',

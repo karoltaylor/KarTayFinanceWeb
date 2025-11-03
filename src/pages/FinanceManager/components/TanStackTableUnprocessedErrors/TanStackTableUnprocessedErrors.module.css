@@ -1,0 +1,104 @@
+.container {
+  width: 100%;
+  margin: 1.5rem 0;
+  padding: 0;
+}
+
+/* Compact container for success state */
+.container.compact {
+  margin: 0.5rem 0;
+}
+
+/* Enhanced custom styles for TanStack Unprocessed Errors Table */
+.container :global(.MuiTable-root) {
+  font-family: 'Inter', 'Roboto', 'Helvetica', 'Arial', sans-serif;
+}
+
+.container :global(.MuiTableHead-root) {
+  background-color: rgba(244, 67, 54, 0.08);
+}
+
+.container :global(.MuiTableCell-head) {
+  font-weight: 600;
+  color: #f44336;
+  background-color: rgba(244, 67, 54, 0.08);
+  border-bottom: 2px solid #f44336;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.container :global(.MuiTableCell-head:hover) {
+  background-color: rgba(244, 67, 54, 0.12);
+}
+
+.container :global(.MuiTableCell-body) {
+  font-size: 0.875rem;
+  border-bottom: 1px solid rgba(244, 67, 54, 0.2);
+  padding: 8px 16px;
+}
+
+.container :global(.MuiTableRow-root) {
+  transition: background-color 0.2s ease;
+}
+
+.container :global(.MuiTableRow-root:nth-of-type(even)) {
+  background-color: rgba(255, 235, 238, 0.3);
+}
+
+.container :global(.MuiTableRow-root:hover) {
+  background-color: rgba(244, 67, 54, 0.04);
+}
+
+.container :global(.MuiTablePagination-root) {
+  border-top: 2px solid #ffcdd2;
+  background-color: rgba(255, 235, 238, 0.5);
+}
+
+/* Alert styling */
+.container :global(.MuiAlert-root) {
+  border-radius: 8px;
+  margin-bottom: 16px;
+}
+
+.container :global(.MuiAlert-message) {
+  width: 100%;
+}
+
+/* Search input styling */
+.container :global(.MuiTextField-root) {
+  margin: 0;
+}
+
+.container :global(.MuiInputBase-root) {
+  border-radius: 8px;
+}
+
+/* Loading spinner styling */
+.container :global(.MuiCircularProgress-root) {
+  color: #f44336;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1200px) {
+  .container {
+    margin: 1rem 0;
+  }
+}
+
+@media (max-width: 768px) {
+  .container :global(.MuiTableCell-body) {
+    font-size: 0.75rem;
+    padding: 4px 8px;
+  }
+  
+  .container :global(.MuiTableCell-head) {
+    font-size: 0.75rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .container :global(.MuiTableCell-body) {
+    font-size: 0.7rem;
+    padding: 2px 4px;
+  }
+}

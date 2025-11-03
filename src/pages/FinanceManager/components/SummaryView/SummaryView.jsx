@@ -1,8 +1,9 @@
 import React from 'react';
 import { Wallet } from 'lucide-react';
 import StatsGrid from '../StatsGrid/StatsGrid';
-import WalletOverview from '../WalletOverview/WalletOverview';
-import { formatCurrency } from '../../utils/financeUtils';
+import BalanceGrowthChart from '../BalanceGrowthChart/BalanceGrowthChart';
+import AssetList from '../AssetList/AssetList';
+import { formatCurrency, getAllAssets, calculateBalanceGrowth } from '../../utils/financeUtils';
 import { MESSAGES } from '../../constants/constants';
 import styles from './SummaryView.module.css';
 
@@ -17,24 +18,22 @@ export default function SummaryView({ wallets, stats, onSelectWallet }) {
       type: 'balance'
     },
     {
-      label: 'Transactions',
-      value: stats.totalTransactions.toString(),
-      icon: 'calendar',
-      type: 'info'
+      label: 'Total Deposits',
+      value: formatCurrency(stats.deposits),
+      icon: 'trendingDown',
+      type: 'deposit'
     },
     {
       label: 'Total Income',
-      value: formatCurrency(stats.totalIncome),
+      value: formatCurrency(stats.income),
       icon: 'trendingUp',
       type: 'income'
-    },
-    {
-      label: 'Total Expenses',
-      value: formatCurrency(stats.totalExpenses),
-      icon: 'trendingDown',
-      type: 'expense'
     }
   ];
+
+  // Calculate additional data for charts and lists
+  const allAssets = hasWallets ? getAllAssets(wallets) : [];
+  const balanceGrowthData = hasWallets ? calculateBalanceGrowth(wallets) : [];
 
   return (
     <div className={styles.container}>
@@ -45,8 +44,16 @@ export default function SummaryView({ wallets, stats, onSelectWallet }) {
 
       {hasWallets ? (
         <>
-          <StatsGrid stats={statsData} columns={4} />
-          <WalletOverview wallets={wallets} onSelectWallet={onSelectWallet} />
+          <StatsGrid stats={statsData} columns={3} />
+          
+          <div className={styles.chartsContainer}>
+            <div className={styles.chartPane}>
+              <BalanceGrowthChart balanceData={balanceGrowthData} />
+            </div>
+            <div className={styles.listPane}>
+              <AssetList assets={allAssets} />
+            </div>
+          </div>
         </>
       ) : (
         <div className={styles.emptyState}>

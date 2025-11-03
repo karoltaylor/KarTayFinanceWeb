@@ -1,0 +1,192 @@
+.container {
+  margin-top: 2rem;
+  background: #fff5f5;
+  border: 2px solid #fed7d7;
+  border-radius: 8px;
+  padding: 1.5rem;
+  animation: fadeIn 0.3s ease-in;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.header {
+  margin-bottom: 1rem;
+}
+
+.title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #c53030;
+  margin: 0 0 0.5rem 0;
+}
+
+.errorIcon {
+  font-size: 1.5rem;
+}
+
+.subtitle {
+  margin: 0;
+  font-size: 0.9rem;
+  color: #744210;
+}
+
+.tableWrapper {
+  overflow-x: auto;
+  border-radius: 6px;
+  border: 1px solid #fc8181;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+}
+
+.table thead {
+  background: #feb2b2;
+}
+
+.table thead th {
+  padding: 0.75rem;
+  text-align: left;
+  font-weight: 600;
+  font-size: 0.875rem;
+  color: #742a2a;
+  border-bottom: 2px solid #fc8181;
+  white-space: nowrap;
+}
+
+.table tbody tr {
+  border-bottom: 1px solid #fed7d7;
+  transition: background-color 0.2s;
+}
+
+.table tbody tr:hover {
+  background: #fffaf0;
+}
+
+.table tbody tr:last-child {
+  border-bottom: none;
+}
+
+.table tbody td {
+  padding: 0.75rem;
+  font-size: 0.875rem;
+  color: #2d3748;
+  vertical-align: top;
+}
+
+.rowNumber {
+  font-weight: 600;
+  color: #c53030;
+  font-family: 'Monaco', 'Courier New', monospace;
+}
+
+.number {
+  text-align: right;
+  font-family: 'Monaco', 'Courier New', monospace;
+  font-size: 0.85rem;
+}
+
+.typeBadge {
+  display: inline-block;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  background: #e2e8f0;
+  color: #2d3748;
+}
+
+.errorMessage {
+  max-width: 300px;
+}
+
+.errorText {
+  display: block;
+  color: #c53030;
+  font-weight: 500;
+  word-break: break-word;
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+  .container {
+    padding: 1rem;
+  }
+
+  .table {
+    font-size: 0.8rem;
+  }
+
+  .table thead th,
+  .table tbody td {
+    padding: 0.5rem;
+  }
+
+  .title {
+    font-size: 1.1rem;
+  }
+
+  .errorMessage {
+    max-width: 200px;
+    font-size: 0.75rem;
+  }
+}
+
+/* Very small screens - show as cards */
+@media (max-width: 600px) {
+  .tableWrapper {
+    border: none;
+  }
+
+  .table thead {
+    display: none;
+  }
+
+  .table tbody tr {
+    display: block;
+    margin-bottom: 1rem;
+    border: 1px solid #fc8181;
+    border-radius: 6px;
+    padding: 1rem;
+    background: white;
+  }
+
+  .table tbody td {
+    display: block;
+    text-align: left !important;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid #fed7d7;
+  }
+
+  .table tbody td:last-child {
+    border-bottom: none;
+  }
+
+  .table tbody td::before {
+    content: attr(data-label);
+    font-weight: 600;
+    color: #742a2a;
+    display: inline-block;
+    margin-right: 0.5rem;
+  }
+
+  .errorMessage {
+    max-width: 100%;
+  }
+}
+
