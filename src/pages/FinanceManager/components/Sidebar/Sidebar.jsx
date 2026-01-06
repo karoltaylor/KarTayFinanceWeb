@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { DollarSign, TrendingUp } from 'lucide-react';
+import { DollarSign, TrendingUp, Package } from 'lucide-react';
 import WalletList from '../WalletList/WalletList';
 import AddWalletForm from '../AddWalletForm/AddWalletForm';
 import styles from './Sidebar.module.css';
@@ -7,7 +7,9 @@ import styles from './Sidebar.module.css';
 export default function Sidebar({ 
   wallets, 
   selectedWalletId, 
+  selectedView,
   onSelectWallet, 
+  onSelectView,
   onAddWallet, 
   onRemoveWallet 
 }) {
@@ -16,6 +18,16 @@ export default function Sidebar({
   const handleAddWallet = (walletName) => {
     onAddWallet(walletName);
     setShowAddWallet(false);
+  };
+
+  const handleSummaryClick = () => {
+    onSelectWallet(null);
+    onSelectView?.('summary');
+  };
+
+  const handleAssetsClick = () => {
+    onSelectWallet(null);
+    onSelectView?.('assets');
   };
 
   return (
@@ -29,13 +41,23 @@ export default function Sidebar({
       </header>
 
       <button
-        onClick={() => onSelectWallet(null)}
+        onClick={handleSummaryClick}
         className={`${styles.summaryButton} ${
-          selectedWalletId === null ? styles.active : ''
+          selectedWalletId === null && selectedView === 'summary' ? styles.active : ''
         }`}
       >
         <TrendingUp size={20} />
         <span>All Wallets Summary</span>
+      </button>
+
+      <button
+        onClick={handleAssetsClick}
+        className={`${styles.summaryButton} ${
+          selectedWalletId === null && selectedView === 'assets' ? styles.active : ''
+        }`}
+      >
+        <Package size={20} />
+        <span>Assets</span>
       </button>
 
       <div className={styles.walletSection}>

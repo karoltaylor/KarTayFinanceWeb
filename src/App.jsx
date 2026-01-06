@@ -1,15 +1,11 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { AuthProvider } from './contexts/AuthContext'
 import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute'
 import UserProfile from './components/UserProfile/UserProfile'
 import FinanceManager from './pages/FinanceManager'
-import MutualFundsManager from './pages/MutualFundsManager'
-import { TrendingUp } from 'lucide-react'
 import styles from './App.module.css'
 
 function App() {
-  const [showMutualFunds, setShowMutualFunds] = useState(false);
-
   useEffect(() => {
     console.log('🚀 ========== APP MOUNTED ==========');
     console.log('🌍 Environment Info:', {
@@ -31,22 +27,11 @@ function App() {
       <ProtectedRoute>
         <div className={styles.app}>
           <header className={styles.header}>
-            <button 
-              onClick={() => setShowMutualFunds(true)} 
-              className={styles.mutualFundsButton}
-              aria-label="Manage Mutual Funds"
-            >
-              <TrendingUp size={20} />
-              <span>Mutual Funds</span>
-            </button>
             <UserProfile />
           </header>
           <main className={styles.main}>
             <FinanceManager />
           </main>
-          {showMutualFunds && (
-            <MutualFundsManager onClose={() => setShowMutualFunds(false)} />
-          )}
         </div>
       </ProtectedRoute>
     </AuthProvider>

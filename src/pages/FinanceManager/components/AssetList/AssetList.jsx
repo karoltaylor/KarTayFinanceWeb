@@ -55,6 +55,8 @@ export default function AssetList({ assets }) {
             ? ((netReturn / asset.totalDeposits) * 100) 
             : 0;
           
+          const assetCurrency = asset.currency || 'USD';
+          
           return (
             <div key={asset.name} className={styles.assetCard}>
               <div className={styles.assetHeader}>
@@ -70,10 +72,15 @@ export default function AssetList({ assets }) {
                     <span className={styles.transactionCount}>
                       {asset.transactionCount} transactions
                     </span>
+                    {asset.hasMixedCurrencies && (
+                      <span className={styles.mixedCurrency} title={`Currencies: ${asset.currencies?.join(', ')}`}>
+                        ⚠️ Mixed
+                      </span>
+                    )}
                   </div>
                 </div>
                 <div className={styles.totalValue}>
-                  {formatCurrency(totalValue)}
+                  {formatCurrency(totalValue, assetCurrency)}
                 </div>
               </div>
               
@@ -83,14 +90,14 @@ export default function AssetList({ assets }) {
                     <TrendingDown className={styles.statIcon} size={16} />
                     <span className={styles.statLabel}>Deposits:</span>
                     <span className={styles.statValue}>
-                      {formatCurrency(asset.totalDeposits)}
+                      {formatCurrency(asset.totalDeposits, assetCurrency)}
                     </span>
                   </div>
                   <div className={styles.statItem}>
                     <TrendingUp className={styles.statIcon} size={16} />
                     <span className={styles.statLabel}>Income:</span>
                     <span className={`${styles.statValue} ${styles.income}`}>
-                      {formatCurrency(asset.totalIncome)}
+                      {formatCurrency(asset.totalIncome, assetCurrency)}
                     </span>
                   </div>
                 </div>
@@ -99,7 +106,7 @@ export default function AssetList({ assets }) {
                   <div className={styles.statItem}>
                     <span className={styles.statLabel}>Net Return:</span>
                     <span className={`${styles.statValue} ${netReturn >= 0 ? styles.positive : styles.negative}`}>
-                      {formatCurrency(netReturn)}
+                      {formatCurrency(netReturn, assetCurrency)}
                     </span>
                   </div>
                   <div className={styles.statItem}>

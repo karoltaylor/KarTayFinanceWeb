@@ -4,7 +4,7 @@ import FileUploader from '../FileUploader/FileUploader';
 import TanStackTableTransactions from '../TanStackTableTransactions/TanStackTableTransactions';
 import TanStackTableErrors from '../TanStackTableErrors/TanStackTableErrors';
 import TanStackTableUnprocessedErrors from '../TanStackTableUnprocessedErrors/TanStackTableUnprocessedErrors';
-import { calculateStats, formatCurrency } from '../../utils/financeUtils';
+import { calculateStats, formatCurrency, getWalletCurrency } from '../../utils/financeUtils';
 import { MESSAGES } from '../../constants/constants';
 import styles from './WalletDetailView.module.css';
 
@@ -33,16 +33,17 @@ export default function WalletDetailView({
   
   const stats = calculateStats(wallet.transactions);
   const hasTransactions = wallet.transactions && wallet.transactions.length > 0;
+  const walletCurrency = getWalletCurrency(wallet);
 
   const statsData = [
     {
       label: 'Total Income',
-      value: formatCurrency(stats.income),
+      value: formatCurrency(stats.income, walletCurrency),
       type: 'income'
     },
     {
       label: 'Total Expenses',
-      value: formatCurrency(stats.expenses),
+      value: formatCurrency(stats.expenses, walletCurrency),
       type: 'expense'
     }
   ];
@@ -51,7 +52,7 @@ export default function WalletDetailView({
     <div className={styles.container}>
       <header className={styles.header}>
         <h2 className={styles.title}>{wallet.name}</h2>
-        <p className={styles.balance}>{formatCurrency(wallet.balance)}</p>
+        <p className={styles.balance}>{formatCurrency(wallet.balance, walletCurrency)}</p>
       </header>
 
       {hasTransactions && (

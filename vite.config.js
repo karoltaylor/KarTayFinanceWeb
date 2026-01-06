@@ -8,46 +8,46 @@ export default defineConfig({
     port: 3000,
     open: true,
     proxy: {
-      // Wallet APIs on port 8000
+      // Wallet APIs on port 8000 (use 127.0.0.1 to avoid IPv6 resolution issues)
       '/api/wallets': {
-        target: 'http://localhost:8000',
+        target: 'http://127.0.0.1:8000',
         changeOrigin: true,
         secure: false,
       },
       '/api/transactions': {
-        target: 'http://localhost:8000',
+        target: 'http://127.0.0.1:8000',
         changeOrigin: true,
         secure: false,
       },
       '/api/users': {
-        target: 'http://localhost:8000',
+        target: 'http://127.0.0.1:8000',
         changeOrigin: true,
         secure: false,
       },
       '/api/stats': {
-        target: 'http://localhost:8000',
+        target: 'http://127.0.0.1:8000',
         changeOrigin: true,
         secure: false,
       },
       '/api/logs': {
-        target: 'http://localhost:8000',
+        target: 'http://127.0.0.1:8000',
         changeOrigin: true,
         secure: false,
       },
       // Asset/Mutual Fund APIs on port 8001
       '/api/v1': {
-        target: 'http://localhost:8001',
+        target: 'http://127.0.0.1:8001',
         changeOrigin: true,
         secure: false,
       },
       '/api/assets': {
-        target: 'http://localhost:8001',
+        target: 'http://127.0.0.1:8001',
         changeOrigin: true,
         secure: false,
       },
       // Catch-all for other API calls (default to 8000)
       '/api': {
-        target: 'http://localhost:8000',
+        target: 'http://127.0.0.1:8000',
         changeOrigin: true,
         secure: false,
       }

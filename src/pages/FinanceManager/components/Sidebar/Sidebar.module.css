@@ -31,7 +31,7 @@
 
 .summaryButton {
   width: 100%;
-  margin-bottom: 1rem;
+  margin-bottom: 0.5rem;
   padding: 1rem;
   border-radius: 0.5rem;
   text-align: left;
@@ -44,6 +44,10 @@
   align-items: center;
   gap: 0.75rem;
   font-weight: 600;
+}
+
+.summaryButton:last-of-type {
+  margin-bottom: 1rem;
 }
 
 .summaryButton:hover {

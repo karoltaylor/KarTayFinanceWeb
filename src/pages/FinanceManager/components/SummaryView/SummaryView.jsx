@@ -3,29 +3,38 @@ import { Wallet } from 'lucide-react';
 import StatsGrid from '../StatsGrid/StatsGrid';
 import BalanceGrowthChart from '../BalanceGrowthChart/BalanceGrowthChart';
 import AssetList from '../AssetList/AssetList';
-import { formatCurrency, getAllAssets, calculateBalanceGrowth } from '../../utils/financeUtils';
+import TransactionUploadPane from '../TransactionUploadPane/TransactionUploadPane';
+import { formatCurrency, getAllAssets, calculateBalanceGrowth, getPrimaryCurrency } from '../../utils/financeUtils';
 import { MESSAGES } from '../../constants/constants';
 import styles from './SummaryView.module.css';
 
-export default function SummaryView({ wallets, stats, onSelectWallet }) {
+export default function SummaryView({ 
+  wallets, 
+  stats, 
+  onSelectWallet,
+  onFileUpload,
+  onAITransformUpload,
+  uploadLoading = false
+}) {
   const hasWallets = wallets.length > 0;
+  const primaryCurrency = getPrimaryCurrency(wallets);
 
   const statsData = [
     {
       label: 'Total Balance',
-      value: formatCurrency(stats.totalBalance),
+      value: formatCurrency(stats.totalBalance, primaryCurrency),
       icon: 'wallet',
       type: 'balance'
     },
     {
       label: 'Total Deposits',
-      value: formatCurrency(stats.deposits),
+      value: formatCurrency(stats.deposits, primaryCurrency),
       icon: 'trendingDown',
       type: 'deposit'
     },
     {
       label: 'Total Income',
-      value: formatCurrency(stats.income),
+      value: formatCurrency(stats.income, primaryCurrency),
       icon: 'trendingUp',
       type: 'income'
     }
@@ -45,6 +54,16 @@ export default function SummaryView({ wallets, stats, onSelectWallet }) {
       {hasWallets ? (
         <>
           <StatsGrid stats={statsData} columns={3} />
+          
+          {/* Upload Pane */}
+          <div className={styles.uploadSection}>
+            <TransactionUploadPane
+              wallets={wallets}
+              onUpload={onFileUpload}
+              onAITransformUpload={onAITransformUpload}
+              loading={uploadLoading}
+            />
+          </div>
           
           <div className={styles.chartsContainer}>
             <div className={styles.chartPane}>

@@ -73,12 +73,19 @@ export const getAllAssets = (wallets) => {
         totalIncome: 0,
         totalVolume: 0,
         transactionCount: 0,
-        wallets: new Set()
+        wallets: new Set(),
+        currency: transaction.currency || 'USD', // Track currency from first transaction
+        currencies: new Set() // Track all currencies for this asset
       });
     }
     
     const asset = assetMap.get(assetName);
     asset.transactionCount++;
+    
+    // Track all currencies used for this asset
+    if (transaction.currency) {
+      asset.currencies.add(transaction.currency);
+    }
     
     // Add wallet to the set
     const wallet = wallets.find(w => w.transactions.includes(transaction));
@@ -97,8 +104,53 @@ export const getAllAssets = (wallets) => {
   
   return Array.from(assetMap.values()).map(asset => ({
     ...asset,
-    wallets: Array.from(asset.wallets)
+    wallets: Array.from(asset.wallets),
+    currencies: Array.from(asset.currencies),
+    hasMixedCurrencies: asset.currencies.size > 1
   }));
+};
+
+/**
+ * Get the primary currency for a wallet based on transaction frequency
+ * @param {Object} wallet - Wallet object with transactions
+ * @returns {string} Primary currency code (e.g., 'PLN', 'USD')
+ */
+export const getWalletCurrency = (wallet) => {
+  if (!wallet?.transactions?.length) return 'USD';
+  
+  // Count currency occurrences
+  const currencyCount = {};
+  wallet.transactions.forEach(t => {
+    const curr = t.currency || 'USD';
+    currencyCount[curr] = (currencyCount[curr] || 0) + 1;
+  });
+  
+  // Return most common currency
+  return Object.entries(currencyCount)
+    .sort((a, b) => b[1] - a[1])[0]?.[0] || 'USD';
+};
+
+/**
+ * Get primary currency across all wallets
+ * @param {Array} wallets - Array of wallet objects
+ * @returns {string} Primary currency code
+ */
+export const getPrimaryCurrency = (wallets) => {
+  if (!wallets?.length) return 'USD';
+  
+  const allTransactions = wallets.flatMap(w => w.transactions || []);
+  if (!allTransactions.length) return 'USD';
+  
+  // Count currency occurrences
+  const currencyCount = {};
+  allTransactions.forEach(t => {
+    const curr = t.currency || 'USD';
+    currencyCount[curr] = (currencyCount[curr] || 0) + 1;
+  });
+  
+  // Return most common currency
+  return Object.entries(currencyCount)
+    .sort((a, b) => b[1] - a[1])[0]?.[0] || 'USD';
 };
 
 /**

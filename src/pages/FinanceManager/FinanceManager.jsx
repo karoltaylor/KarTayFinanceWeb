@@ -15,6 +15,7 @@ import { calculateAllWalletsStats } from './utils/financeUtils';
 import Sidebar from './components/Sidebar/Sidebar';
 import WalletDetailView from './components/WalletDetailView/WalletDetailView';
 import SummaryView from './components/SummaryView/SummaryView';
+import AssetsView from './components/AssetsView/AssetsView';
 import LoadingSpinner from '../../components/LoadingSpinner/LoadingSpinner';
 import styles from './FinanceManager.module.css';
 
@@ -22,6 +23,7 @@ export default function FinanceManager() {
   const { backendUser } = useAuth();
   const [wallets, setWallets] = useState([]);
   const [selectedWalletId, setSelectedWalletId] = useState(null);
+  const [selectedView, setSelectedView] = useState('summary'); // 'summary' | 'assets'
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [errorTransactions, setErrorTransactions] = useState({});
@@ -571,6 +573,11 @@ export default function FinanceManager() {
   const handleSelectWallet = (walletId) => {
     setSelectedWalletId(walletId);
     
+    // When selecting a wallet, reset view to null (wallet detail takes precedence)
+    if (walletId) {
+      setSelectedView(null);
+    }
+    
     // Reset pagination when selecting a new wallet
     setPagination({
       currentPage: 1,
@@ -589,6 +596,113 @@ export default function FinanceManager() {
         // Fetch transactions directly (async but don't await - let it load in background)
         loadWalletTransactions(walletId);
       }
+    }
+  };
+
+  const handleSelectView = (view) => {
+    setSelectedView(view);
+    if (view) {
+      setSelectedWalletId(null); // Clear wallet selection when switching to a view
+    }
+  };
+
+  // Handler for syncing asset prices (placeholder - can be connected to actual API)
+  const handleSyncAsset = async (asset) => {
+    console.log(`🔄 Syncing price for asset: ${asset.name} (${asset.type})`);
+    // TODO: Implement actual price fetching from an API
+    // For now, this is a placeholder that parent components can implement
+    return null;
+  };
+
+  // Handler for AI-transformed file upload
+  // This calls the same upload endpoint but the backend uses Gemini API to parse the file
+  const handleAITransformUpload = async (walletId, file) => {
+    if (!file) return;
+
+    setLoading(true);
+    setError(null);
+
+    try {
+      // Front-end validation: allow only CSV/XLS/XLSX
+      const fileNameLower = (file.name || '').toLowerCase();
+      const isAllowed = fileNameLower.endsWith('.csv') || fileNameLower.endsWith('.xls') || fileNameLower.endsWith('.xlsx');
+      if (!isAllowed) {
+        setError('Unsupported file type. Please upload a CSV, XLS, or XLSX file.');
+        setLoading(false);
+        return;
+      }
+
+      // Find the wallet to get its name
+      const wallet = wallets.find(w => w.id === walletId);
+      if (!wallet) {
+        throw new Error('Wallet not found');
+      }
+      
+      console.log('🤖 Starting AI-transformed transaction upload for wallet:', walletId, wallet.name);
+      logger.transaction('Starting AI-transformed transaction upload', {
+        wallet_id: walletId,
+        wallet_name: wallet.name,
+        file_name: file.name,
+        file_size: file.size,
+        ai_transform: true
+      });
+
+      // Preflight: detect currency
+      let currencyToUse = null;
+      try {
+        const detection = await detectTransactionCurrency(file, walletId);
+        console.log('🔎 Currency detection result:', detection);
+        if (detection?.needs_currency) {
+          const suggested = detection?.detected_currency || '';
+          const promptMsg = `Enter currency (3-letter, e.g. USD, EUR, PLN).${suggested ? ` Suggested: ${suggested}` : ''}`;
+          const input = window.prompt(promptMsg, suggested || '');
+          const value = (input || '').trim().toUpperCase();
+          if (!/^[A-Z]{3}$/.test(value)) {
+            setError('Invalid currency code. Please use a 3-letter code like USD, EUR, PLN.');
+            setLoading(false);
+            return;
+          }
+          currencyToUse = value;
+        } else if (detection?.detected_currency) {
+          currencyToUse = detection.detected_currency.toUpperCase();
+        }
+      } catch (detectErr) {
+        console.warn('⚠️ Currency detection failed, proceeding without explicit currency:', detectErr);
+      }
+      
+      // Upload with AI transform flag - backend will use Gemini to parse the file
+      const uploadResult = await uploadTransactions(file, walletId, wallet.name, currencyToUse);
+      console.log('✅ AI Transform Upload complete:', uploadResult);
+      logger.transaction('AI-transformed transaction upload completed', {
+        wallet_id: walletId,
+        result: uploadResult,
+        ai_transform: true
+      });
+      
+      // Store error transactions if any
+      if (uploadResult.data?.failed_transactions && uploadResult.data.failed_transactions.length > 0) {
+        setErrorTransactions(prev => ({
+          ...prev,
+          [walletId]: uploadResult.data.failed_transactions
+        }));
+        logger.warn('transaction', 'Some AI-transformed transactions failed to upload', {
+          wallet_id: walletId,
+          failed_count: uploadResult.data.failed_transactions.length
+        });
+      }
+      
+      // Refresh transactions for the wallet
+      await refreshWalletTransactions(walletId);
+      
+    } catch (error) {
+      console.error('❌ Error with AI transform upload:', error);
+      logger.error('transaction', 'Failed to upload with AI transform', {
+        wallet_id: walletId,
+        file_name: file.name
+      }, error);
+      setError(`Failed to upload transactions: ${error.message}`);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -786,7 +900,9 @@ export default function FinanceManager() {
       <Sidebar
         wallets={wallets}
         selectedWalletId={selectedWalletId}
+        selectedView={selectedView}
         onSelectWallet={handleSelectWallet}
+        onSelectView={handleSelectView}
         onAddWallet={addWallet}
         onRemoveWallet={removeWallet}
       />
@@ -804,11 +920,19 @@ export default function FinanceManager() {
             onRowsPerPageChange={handleRowsPerPageChange}
             loading={loading}
           />
+        ) : selectedView === 'assets' ? (
+          <AssetsView
+            wallets={wallets}
+            onSyncAsset={handleSyncAsset}
+          />
         ) : (
           <SummaryView
             wallets={wallets}
             stats={allStats}
             onSelectWallet={handleSelectWallet}
+            onFileUpload={handleFileUpload}
+            onAITransformUpload={handleAITransformUpload}
+            uploadLoading={loading}
           />
         )}
       </main>

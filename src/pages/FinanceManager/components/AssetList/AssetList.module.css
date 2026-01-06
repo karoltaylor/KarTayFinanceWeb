@@ -97,6 +97,15 @@
   color: #64748b;
 }
 
+.mixedCurrency {
+  font-size: 0.625rem;
+  color: #d97706;
+  background: #fef3c7;
+  padding: 0.125rem 0.375rem;
+  border-radius: 4px;
+  cursor: help;
+}
+
 .totalValue {
   font-size: 1.25rem;
   font-weight: 700;

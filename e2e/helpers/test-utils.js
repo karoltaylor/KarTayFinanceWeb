@@ -39,6 +39,15 @@ export async function waitForElement(page, selector, options = {}) {
 }
 
 /**
+ * Create a text file on disk for upload within a test
+ */
+export async function createTextFile(path, content) {
+  const fs = await import('fs');
+  fs.writeFileSync(path, content);
+  return path;
+}
+
+/**
  * Check if element exists (without waiting)
  */
 export async function elementExists(page, selector) {

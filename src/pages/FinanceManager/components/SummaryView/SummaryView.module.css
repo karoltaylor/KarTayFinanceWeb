@@ -19,6 +19,10 @@
   margin: 0;
 }
 
+.uploadSection {
+  margin-top: 1.5rem;
+}
+
 .chartsContainer {
   display: grid;
   grid-template-columns: 1fr;

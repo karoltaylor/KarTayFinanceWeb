@@ -89,28 +89,22 @@ test.describe('Authentication', () => {
     expect(typeof authState === 'boolean').toBeTruthy();
   });
 
-  // Example test structure - you'll need to implement actual auth flow
-  test.skip('should login with valid credentials', async ({ page }) => {
+  test('should logout when authenticated and return to login page', async ({ page }) => {
     await page.goto('/');
-    
-    // This is a template - implement based on your auth method
-    // For Google Sign-In, you might need to use Playwright's auth setup
-    // See: https://playwright.dev/docs/auth
-    
-    // Example:
-    // await page.getByRole('button', { name: /sign in with google/i }).click();
-    // ... handle OAuth popup/redirect
-    // await expect(page.locator('header')).toBeVisible();
+    await page.waitForLoadState('domcontentloaded');
+    const authed = await waitForAuth(page, 5000);
+    if (authed) {
+      // Open user menu and click Sign Out
+      await page.getByRole('button', { name: /user menu/i }).click();
+      await page.getByRole('button', { name: /sign out/i }).click();
+      // After logout, login page should be visible
+      await expect(page.getByRole('button', { name: /sign in with/i }).first()).toBeVisible({ timeout: 10000 });
+    } else {
+      test.skip();
+    }
   });
 
-  test.skip('should logout successfully', async ({ page }) => {
-    // Template for logout test
-    // You'll need to be authenticated first
-    
-    // Example:
-    // await page.goto('/');
-    // await page.getByRole('button', { name: /logout/i }).click();
-    // await expect(page).toHaveURL(/login/);
-  });
+  // Example test structure - actual provider login is handled via setup project storageState
+  test.skip('should login with valid credentials', async ({ page }) => {});
 });
 
